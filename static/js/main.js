@@ -201,6 +201,9 @@ const cssW = overlay.clientWidth;
 const cssH = overlay.clientHeight;
 ctx.clearRect(0, 0, cssW, cssH);
 if (!result.bbox) return;
+// Belum ada label & bukan kasus "wajah kejauhan" -> masih nunggu streak/inference,
+// jangan gambar kotak dulu (biar gak ada kotak abu-abu netral yang keliatan kayak putih)
+if (!result.label && !result.face_too_small) return;
 
 const scaleX = cssW / sendCanvas.width;
 const scaleY = cssH / sendCanvas.height;
@@ -212,9 +215,8 @@ const bx2 = cssW - (x1 * scaleX);
 const by1 = y1 * scaleY;
 const by2 = y2 * scaleY;
 
-let color = '#9aa2b1';
-if (result.face_too_small) color = '#d97706';
-else if (result.label === 'DROWSY') color = '#dc2626';
+let color = '#d97706';
+if (result.label === 'DROWSY') color = '#dc2626';
 else if (result.label === 'NON-DROWSY') color = '#16a34a';
 
 ctx.strokeStyle = color;
