@@ -1,0 +1,22 @@
+./vendor/mediapipe-0.10.21+patched1-cp312-cp312-manylinux_2_28_x86_64.whl
+./vendor/onnxruntime-1.20.1-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl
+
+# Computer Vision
+opencv-python-headless==4.9.0.80
+protobuf==4.25.3
+
+# Mediapipe 
+absl-py
+attrs
+flatbuffers
+
+# Onnxruntime (logging/util internal)
+coloredlogs
+packaging
+
+# Web dashboard dan WebSocket
+flask==3.0.3
+flask-sock==0.7.0
+
+# Utilities
+numpy==1.26.4
