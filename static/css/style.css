@@ -94,12 +94,6 @@ h1 {
   margin: 0;
 }
 
-.subtitle {
-  color: var(--text-dim);
-  font-size: 13px;
-  font-family: var(--mono);
-}
-
 main {
   width: 100%;
   display: grid;
@@ -219,15 +213,8 @@ video { transform: scaleX(-1); }
   transition: color 0.3s ease, background 0.3s ease;
 }
 .status-label.safe   { color: var(--safe);   background: var(--safe-bg); }
-.status-label.warn   { color: var(--warn);   background: var(--warn-bg); }
 .status-label.danger { color: var(--danger); background: var(--danger-bg); }
 .status-label.idle   { color: var(--text-dim); background: #f1f2f5; }
-
-.status-prob {
-  font-family: var(--mono);
-  font-size: 12px;
-  color: var(--text-dim);
-}
 
 .alarm-banner {
   width: 100%;
@@ -360,7 +347,6 @@ button.danger-outline { color: var(--danger); border-color: #f5b5b5; }
   .gauge-total { font-size: 10px; }
   .status-label { font-size: 17px; }
   h1 { font-size: 15px; }
-  .subtitle { font-size: 11px; }
 
   .icon-controls { gap: 12px; }
   .icon-btn {

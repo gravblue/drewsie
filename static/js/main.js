@@ -12,6 +12,7 @@ const liveDot     = document.getElementById('liveDot');
 const fpsTag      = document.getElementById('fpsTag');
 const gaugeFill   = document.getElementById('gaugeFill');
 const countLabel  = document.getElementById('countLabel');
+const gaugeTotal  = document.getElementById('gaugeTotal');
 const statusLabel = document.getElementById('statusLabel');
 const alarmBanner = document.getElementById('alarmBanner');
 const alarmAudio  = document.getElementById('alarmAudio');
@@ -27,6 +28,7 @@ function syncDrowsyFramesTotal(drowsyFrames) {
 if (!drowsyFrames || drowsyFrames === DROWSY_FRAMES_TOTAL) return;
 DROWSY_FRAMES_TOTAL = drowsyFrames;
 WARN_THRESHOLD = Math.round(DROWSY_FRAMES_TOTAL * 0.5);
+if (gaugeTotal) gaugeTotal.textContent = `/ ${DROWSY_FRAMES_TOTAL}`;
 }
 
 let currentAlertLevel = 'idle'; // idle -> warning -> danger
