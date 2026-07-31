@@ -165,6 +165,14 @@ detector = mp_face.FaceDetection(
     min_detection_confidence=CONF_MIN,
 )
 
+# Warm-up MediaPipe detector saat server start. Call pertama ke
+# detector.process() biasanya lebih lambat karena MediaPipe baru
+# compile/load graph internalnya di call itu -- kalau gak di-warm-up
+# di sini, delay-nya bakal kerasa pas user pertama kali nyalain kamera.
+_dummy_rgb = np.zeros((DETECT_MAX_WIDTH, DETECT_MAX_WIDTH, 3), dtype=np.uint8)
+detector.process(_dummy_rgb)
+print("[INFO] MediaPipe face detector warm-up selesai.")
+
 
 def crop_face_mediapipe(frame: np.ndarray, detection, padding: float = 0.2):
     """Crop wajah dari `frame` berdasarkan bbox relatif MediaPipe, dengan
