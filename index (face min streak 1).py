@@ -35,8 +35,6 @@ DETECT_MAX_WIDTH = 480      # deteksi wajah di frame yang di-downscale ke lebar 
                             # (bbox MediaPipe relatif 0-1, jadi tetap valid buat crop di frame asli)
 
 SMOOTH_WINDOW = 2           # rata-rata probabilitas 2 frame terakhir buat anti-flicker
-FACE_MIN_STREAK = 3         # wajah harus valid N frame berturut-turut dulu sebelum dipercaya
-                            # (anti false-positive dari deteksi yang cuma "kedip" 1-2 frame doang)
 
 
 
@@ -213,12 +211,10 @@ class SessionState:
     def __init__(self):
         self.drowsy_count = 0
         self.prob_window = deque(maxlen=SMOOTH_WINDOW)
-        self.face_streak = 0
 
     def reset(self):
         self.drowsy_count = 0
         self.prob_window.clear()
-        self.face_streak = 0
 
 
 def _no_face_response(state: SessionState, response: dict) -> dict:
@@ -261,7 +257,6 @@ def process_frame(frame: np.ndarray, state: SessionState) -> dict:
 
     if not results.detections:
         state.prob_window.clear()
-        state.face_streak = 0
         return _no_face_response(state, response)
 
     detection = results.detections[0]
@@ -275,7 +270,6 @@ def process_frame(frame: np.ndarray, state: SessionState) -> dict:
         # wajah kejauhan/kekecilan -> sinyal ga reliable, perlakukan sama kayak "ga ada wajah"
         response["face_too_small"] = True
         state.prob_window.clear()
-        state.face_streak = 0
         _no_face_response(state, response)
         x1 = int(raw_bbox.xmin * w)
         y1 = int(raw_bbox.ymin * h)
@@ -286,14 +280,6 @@ def process_frame(frame: np.ndarray, state: SessionState) -> dict:
 
     face_crop, bbox = crop_face_mediapipe(frame_rgb, detection)
     if face_crop is None or face_crop.size == 0:
-        state.face_streak = 0
-        return _no_face_response(state, response)
-
-    state.face_streak += 1
-    if state.face_streak < FACE_MIN_STREAK:
-        # wajah baru kedeteksi, belum cukup streak -> jangan buru2 percaya,
-        # tunggu frame berikutnya dulu
-        response["bbox"] = list(bbox)
         return _no_face_response(state, response)
 
     face_input = preprocess_face(face_crop)
