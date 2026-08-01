@@ -19,7 +19,7 @@ const alarmAudio  = document.getElementById('alarmAudio');
 const logList     = document.getElementById('logList');
 
 const CIRCUMFERENCE = 2 * Math.PI * 64;
-const SEND_INTERVAL_MS = 250;   // ~4fps -> DROWSY_FRAMES=6 setara ~1.5 detik mata merem
+const SEND_INTERVAL_MS = 150;   
 
 let DROWSY_FRAMES_TOTAL = 6;
 let WARN_THRESHOLD = Math.round(DROWSY_FRAMES_TOTAL * 0.5); // level "waspada" mulai dari sini
